@@ -25,7 +25,9 @@ function Login(props) {
     event.preventDefault(); // to avoid refreshing every time the submit button is clicked
     setErrors(Validation(values));
     if (errors.email === "" && errors.password === "") {
-      axios.post('http://localhost:8080/login', values)
+      formData.append('email', values.email);
+      formData.append('password', values.password);
+      axios.post('http://localhost:8080/login', formData.toString())
         .then(res => {
             props.setLoggedIn(true);
             navigate('/home');         // if succesfull then redirect to home page 
