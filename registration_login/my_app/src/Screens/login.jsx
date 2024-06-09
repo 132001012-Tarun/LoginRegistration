@@ -24,15 +24,17 @@ function Login(props) {
   function handleSubmit(event) {
     event.preventDefault(); // to avoid refreshing every time the submit button is clicked
     setErrors(Validation(values));
-    if (errors.email === "" && errors.password === "") {
-      formData.append('email', values.email);
-      formData.append('password', values.password);
-      axios.post('http://localhost:8080/login', formData.toString())
+    if (Object.keys(errors).length === 0) {
+      axios.get('http://localhost:8080/users')
         .then(res => {
             props.setLoggedIn(true);
-            navigate('/home');         // if succesfull then redirect to home page 
+            navigate('/home'); // if successful then redirect to home page
+          
         })
-        .catch(err => console.log("Invalid email or password"));      // if user details are not there the show this message.
+        .catch(err => {
+          console.error(err);
+          setErrors("An error occurred. Please try again later.");
+        });
     }
   }
 
